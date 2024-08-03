@@ -85,6 +85,7 @@ const Apidata = () => {
               email: selectedData.email,
               nickName: selectedData.nickName
             }}
+            enableReinitialize={true}//imp
             onSubmit={async (values, { resetForm }) => {
               if (selectedData) {
                 updateData(selectedData._id, values);
