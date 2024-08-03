@@ -12,6 +12,8 @@ const Apidata = () => {
     getData();
   }, []);
 
+  useEffect(() => { console.log(selectedData); }
+    , [selectedData])
   const getData = () => {
     axios.get(url, {
       headers: {
@@ -36,7 +38,7 @@ const Apidata = () => {
     }).catch((error) => {
       console.error('POST error:', error);
     });
-    
+
   };
 
   const updateData = (id, values) => {
@@ -66,7 +68,7 @@ const Apidata = () => {
 
   return (
     <>
-      <div style={{width:"90%",margin:"10px auto"}}>
+      <div style={{ width: "90%", margin: "10px auto" }}>
         <h1>{!selectedData ? "Sign Up" : "Update"}</h1>
         {
           <Formik
@@ -76,9 +78,14 @@ const Apidata = () => {
               mobileNo: "",
               email: "",
               nickName: ""
-            } : selectedData}
-            enableReinitialize={true}//imp
-            onSubmit={async (values,{resetForm}) => {
+            } : {
+              firstName: selectedData.firstName,
+              lastName: selectedData.lastName,
+              mobileNo: selectedData.mobileNo,
+              email: selectedData.email,
+              nickName: selectedData.nickName
+            }}
+            onSubmit={async (values, { resetForm }) => {
               if (selectedData) {
                 updateData(selectedData._id, values);
               } else {
@@ -90,26 +97,26 @@ const Apidata = () => {
           >
             <Form>
               <label htmlFor="firstName">First Name</label>
-              <Field id="firstName" name="firstName" placeholder="Jane" />
+              <Field id="firstName" name="firstName" />
 
               <label htmlFor="lastName">Last Name</label>
-              <Field id="lastName" name="lastName" placeholder="Doe" />
+              <Field id="lastName" name="lastName" />
 
               <label htmlFor="nickName">Nick Name</label>
-              <Field id="nickName" name="nickName" placeholder="Doe" />
+              <Field id="nickName" name="nickName" />
 
               <label htmlFor="mobileNo">Mobile No</label>
-              <Field id="mobileNo" name="mobileNo" placeholder="1234567890" />
+              <Field id="mobileNo" name="mobileNo" />
 
               <label htmlFor="email">Email</label>
-              <Field id="email" name="email" placeholder="jane@acme.com" type="email" />
+              <Field id="email" name="email" type="email" />
               <button type="submit">{!selectedData ? "Submit" : "Update"}</button>
             </Form>
           </Formik>
         }
       </div>
 
-      <table style={{width:"90%",margin:"10px auto"}} border={"1px"}>
+      <table style={{ width: "90%", margin: "10px auto" }} border={"1px"}>
         <thead>
           <tr>
             <th>First Name</th>
@@ -128,7 +135,7 @@ const Apidata = () => {
               <td>{item.mobileNo}</td>
               <td>{item.email}</td>
               <td>{item.nickName}</td>
-              <td style={{display:"flex",justifyContent:"space-evenly"}}>
+              <td style={{ display: "flex", justifyContent: "space-evenly" }}>
                 <button onClick={() => deleteData(item._id)}>Delete</button>
                 <button onClick={() => setSelectedData(item)}>Update</button>
               </td>
